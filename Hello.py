@@ -13,39 +13,80 @@
 # limitations under the License.
 
 import streamlit as st
-from streamlit.logger import get_logger
+import openai
 
-LOGGER = get_logger(__name__)
+# Set OpenAI API key using the SDK's dedicated method
+openai.api_key = "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"
 
+# Query Suggestions
+query_suggestions = [
+    "Tell me about African immigration history in the US",
+    "What are the current immigration policies for African immigrants?",
+    "Statistics on African immigrants in the US",
+    "Challenges faced by African immigrants in the United States",
+    "How can I support African immigrant communities"
+]
 
-def run():
-    st.set_page_config(
-        page_title="Hello",
-        page_icon="👋",
-    )
+# Set up the Streamlit app
+def main():
+    st.title('African Collaborative Network (ACN)')
+    st.sidebar.image("ACN_LOGO.webp", caption='ACN', use_column_width=True)
 
-    st.write("# Welcome to Streamlit! 👋")
+    # Initialize 'typed_query_history' session state if not present
+    if 'typed_query_history' not in st.session_state:
+        st.session_state.typed_query_history = []
 
-    st.sidebar.success("Select a demo above.")
+    # Display query suggestions
+    st.title('Query Suggestions')
+    for i, suggestion in enumerate(query_suggestions):
+        if st.button(suggestion, key=f"suggestion_button_{i}"):
+            # If a suggestion is clicked, populate the user query with the selected suggestion
+            user_query = suggestion
+            # Proceed to get the response for the selected suggestion
+            response_obj = openai.ChatCompletion.create(
+                model="gpt-3.5-turbo",
+                messages=[
+                    {"role": "user", "content": user_query}
+                ]
+            )
+            response = response_obj['choices'][0]['message']['content']
 
-    st.markdown(
-        """
-        Streamlit is an open-source app framework built specifically for
-        Machine Learning and Data Science projects.
-        **👈 Select a demo from the sidebar** to see some examples
-        of what Streamlit can do!
-        ### Want to learn more?
-        - Check out [streamlit.io](https://streamlit.io)
-        - Jump into our [documentation](https://docs.streamlit.io)
-        - Ask a question in our [community
-          forums](https://discuss.streamlit.io)
-        ### See more complex demos
-        - Use a neural net to [analyze the Udacity Self-driving Car Image
-          Dataset](https://github.com/streamlit/demo-self-driving)
-        - Explore a [New York City rideshare dataset](https://github.com/streamlit/demo-uber-nyc-pickups)
-    """
-    )
+            # Apply green color to the response text
+            st.write(f'<span style="color: green;">Response for \'{user_query}\':</span>', unsafe_allow_html=True)
+            st.write(response)
 
+    # Handle user queries
+    user_query = st.text_input('Ask anything about African Immigrants in the US:', '')
+
+    if user_query:
+        response_obj = openai.ChatCompletion.create(
+            model="gpt-3.5-turbo",
+            messages=[
+                {"role": "user", "content": user_query}
+            ]
+        )
+        response = response_obj['choices'][0]['message']['content']
+
+        # Apply green color to the response text
+        st.write(f'<span style="color: green;">Response for \'{user_query}\':</span>', unsafe_allow_html=True)
+        st.write(response)
+
+        # Append the query and response to the query history
+        st.session_state.typed_query_history.append({"query": user_query, "response": response})
+
+    # Display query history in the sidebar
+    st.sidebar.title('Query History')
+    clear_typed_query_history = st.sidebar.button("Clear Query History")
+
+    if clear_typed_query_history:
+        st.session_state.typed_query_history = []  # Clear the query history
+
+    for i, entry in enumerate(st.session_state.typed_query_history):
+        query = entry["query"]
+        response = entry["response"]
+        if st.sidebar.button(f"{i + 1}. {query}", key=f"typed_query_history_button_{i}"):
+            st.write(f'<span style="color: green;">Response for \'{query}\':</span>', unsafe_allow_html=True)
+            st.write(response)
 
 if __name__ == "__main__":
-    run()
+    main()
