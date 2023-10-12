@@ -15,7 +15,9 @@ import streamlit as st
 import openai
 
 # Set OpenAI API key using the SDK's dedicated method
-openai.api_key = "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"
+#openai.api_key = "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"
+
+os.environ['OPENAI_API_KEY'] = "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"
 
 # Query Suggestions
 query_suggestions = [
