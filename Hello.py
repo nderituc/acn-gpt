@@ -17,7 +17,7 @@ import os
 
 # Set OpenAI API key using the SDK's dedicated method
 # Retrieve the API key from the environment variable
-api_key = os.environ.get('OPENAI_API_KEY')
+api_key = st.secrets["OPENAI_API_KEY"]
 
 # Use the API key with OpenAI
 openai.api_key = api_key
