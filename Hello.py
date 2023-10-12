@@ -13,6 +13,7 @@
 # limitations under the License.
 import streamlit as st
 import openai
+import os
 
 # Set OpenAI API key using the SDK's dedicated method
 #openai.api_key = "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"
