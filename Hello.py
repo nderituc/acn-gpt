@@ -11,12 +11,11 @@
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
-
 import streamlit as st
-from langchain.llms import OpenAI
+import openai
 
 # Set OpenAI API key using the SDK's dedicated method
-OpenAI.api_key = "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"
+openai.api_key = "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"
 
 # Query Suggestions
 query_suggestions = [
@@ -43,7 +42,7 @@ def main():
             # If a suggestion is clicked, populate the user query with the selected suggestion
             user_query = suggestion
             # Proceed to get the response for the selected suggestion
-            response_obj = OpenAI.ChatCompletion.create(
+            response_obj = openai.ChatCompletion.create(
                 model="gpt-3.5-turbo",
                 messages=[
                     {"role": "user", "content": user_query}
@@ -59,7 +58,7 @@ def main():
     user_query = st.text_input('Ask anything about African Immigrants in the US:', '')
 
     if user_query:
-        response_obj = OpenAI.ChatCompletion.create(
+        response_obj = openai.ChatCompletion.create(
             model="gpt-3.5-turbo",
             messages=[
                 {"role": "user", "content": user_query}
@@ -90,3 +89,6 @@ def main():
 
 if __name__ == "__main__":
     main()
+
+
+
