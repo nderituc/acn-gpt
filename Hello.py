@@ -16,9 +16,9 @@ import openai
 import os
 
 # Set OpenAI API key using the SDK's dedicated method
-openai.api_key = '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'
+#openai.api_key = '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'
 
-#os.environ['OPENAI_API_KEY'] = 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
+os.environ['OPENAI_API_KEY'] = "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"
 
 # Query Suggestions
 query_suggestions = [
