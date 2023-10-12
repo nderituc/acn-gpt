@@ -41,7 +41,6 @@ def main():
         st.session_state.typed_query_history = []
 
     # Display query suggestions
-    st.title('Query Suggestions')
     for i, suggestion in enumerate(query_suggestions):
         if st.button(suggestion, key=f"suggestion_button_{i}"):
             # If a suggestion is clicked, populate the user query with the selected suggestion
