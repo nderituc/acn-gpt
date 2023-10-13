@@ -14,6 +14,12 @@
 import streamlit as st
 import openai
 import os
+import streamlit as st
+
+# Configure Streamlit settings to hide the "Manage app" UI elements
+st.set_option('server.showManageApp', False)
+
+# Your Streamlit app code here...
 
 # Set OpenAI API key using the SDK's dedicated method
 # Retrieve the API key from the environment variable
